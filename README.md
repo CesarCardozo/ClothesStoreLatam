@@ -58,3 +58,7 @@ OptionalParams: idShoppingCar(numeric)
 ## Api Test Collection on postman
 
 The API's test collection for postman can be downloaded [here](https://github.com/CesarCardozo/ClothesstoreLATAM/blob/development/Experimentality.postman_collection.json)
+
+## Database creation script
+
+The database creation script can be found [here](https://github.com/CesarCardozo/ClothesstoreLATAM/blob/development/DataBase.sql)
