@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"clothItemName\":\"Brown Shoe\",\r\n\t\"clothItemDescription\":\"Brown leather shoe \",\r\n\t\"clothItemPrice\":350000,\r\n\t\"clothItemDiscount\":0.15,\r\n\t\"clothItemImageUrls\":[\"www.imageUrlFront.com\", \"www.imageUrlBack.com\", \"www.imageUrl.com\"]\r\n}",
+							"raw": "{\r\n    \"clothItemName\":\"Brown Shoe\",\r\n\t\"clothItemDescription\":\"Brown leather shoe \",\r\n\t\"clothItemPrice\":350000,\r\n\t\"clothItemDiscount\":0.15,\r\n\t\"clothItemImageUrls\":[\"www.imageUrlFront.com\", \"www.imageUrlBack.com\", \"www.imageUrl.com\",\r\n    \"https://s3.us-east-2.amazonaws.com/clothesstorelatam/1622842562774-shoe.jpg\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -60,11 +60,13 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/storage/uploadImage",
+							"raw": "https://clothesstorelatam.herokuapp.com/storage/uploadImage",
+							"protocol": "https",
 							"host": [
-								"localhost"
+								"clothesstorelatam",
+								"herokuapp",
+								"com"
 							],
-							"port": "8080",
 							"path": [
 								"storage",
 								"uploadImage"
