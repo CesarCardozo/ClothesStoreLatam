@@ -54,3 +54,7 @@ OptionalParams: idShoppingCar(numeric)
   Endpoint: https://clothesstorelatam.herokuapp.com/storage/uploadImage  
     RequesMethod: POST  
     Params: file(file)  
+    
+## Api Test Collection on postman
+
+The API's test collection for postman can be downloaded [here](https://github.com/CesarCardozo/ClothesstoreLATAM/blob/development/Experimentality.postman_collection.json)
