@@ -23,6 +23,11 @@ import com.experimentality.ClothesstoreLATAM.odels.exceptions.DataBaseException;
 @RestController
 public class ClothesstoreLatamController {
 
+	@GetMapping(value = "/holi")
+	public String  hello() {
+		return "HelloWorld";
+	}
+	
 	/**
 	 * logic of the cloth items
 	 */
