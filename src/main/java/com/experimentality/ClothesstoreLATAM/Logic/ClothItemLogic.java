@@ -22,14 +22,31 @@ import com.experimentality.ClothesstoreLATAM.odels.exceptions.BussinesExceptions
 import com.experimentality.ClothesstoreLATAM.odels.exceptions.DataBaseException;
 import com.experimentality.ClothesstoreLATAM.odels.exceptions.DataBaseExceptions;
 
+/**
+ * Represent all the logic operations for cloth items
+ * @author ccardozo
+ *
+ */
 @Service
 public class ClothItemLogic implements AbstractValidator<ClothItemDTO, ClothItem> {
 
+	/**
+	 * cloth item repository
+	 */
 	@Autowired
 	private ClothItemRepository clothItemRepository;
+	/**
+	 * cloth item transformer
+	 */
 	@Autowired
 	private ClothItemTransformer clothItemTransformer;
 	
+	/**
+	 * Method that retrieve all the cloth items on the db, sorted by number of lookups and if necesary retrieves the results paginated
+	 * @param paginationSize (can be null, on wich case return all the results)
+	 * @param currentPage (can be null, on wich case return all the results)
+	 * @return list of cloth items sorted by number of lookups
+	 */
 	public List<ClothItemDTO> getClothItemsByLookups(Integer paginationSize, Integer currentPage) {
 		List<ClothItem> clothItems;
 		if(paginationSize != null && paginationSize >= 0 && currentPage != null && currentPage >= 0) {
@@ -45,8 +62,16 @@ public class ClothItemLogic implements AbstractValidator<ClothItemDTO, ClothItem
 		return dtos;
 	}
 	
+	/**
+	 * Method that retrieves all the cloth items on the db on wich the name matches with the given keywords
+	 * @param keywords to look for
+	 * @param paginationSize (can be null, on wich case return all the results) 
+	 * @param currentPage (can be null, on wich case return all the results)
+	 * @return list of cloth items found
+	 * @throws BussinesException
+	 */
 	@Transactional
-	public List<ClothItemDTO>getClothItems(String keywords, Integer paginationSize, Integer currentPage) throws BussinesException {  
+	public List<ClothItemDTO>getClothItemsByKeywords(String keywords, Integer paginationSize, Integer currentPage) throws BussinesException {  
 		validateParameterBussinesRules(keywords, ValidatorOperations.SEARCH_BY_KEYWORDS);
 		Map<Long,ClothItem> clotheItems;
 		List<String> keyWordsList = Arrays.asList(keywords.split(" "));
@@ -63,6 +88,13 @@ public class ClothItemLogic implements AbstractValidator<ClothItemDTO, ClothItem
 		return dtos;
 	}
 	
+	/**
+	 * Method that retrieves a detailed dto of the cloth item by the given id
+	 * @param idClothItem id of the cloth item
+	 * @return detailed {@link ClothItemDTO}
+	 * @throws BussinesException
+	 * @throws DataBaseException
+	 */
 	public ClothItemDTO getClothItemById(Long idClothItem) throws BussinesException, DataBaseException {
 		validateParameterBussinesRules(idClothItem, ValidatorOperations.SEARCH);
 		ClothItem clothItem = new ClothItem();
@@ -72,13 +104,23 @@ public class ClothItemLogic implements AbstractValidator<ClothItemDTO, ClothItem
 		return clothItemTransformer.toDTO(clothItem);
 	}
 
+	/**
+	 * method that add a cloth item 
+	 * @param clothItemDTO to be added
+	 * @throws BussinesException
+	 * @throws DataBaseException
+	 */
 	public void addClothItem(ClothItemDTO clothItemDTO) throws BussinesException, DataBaseException {
 		validateBussinesRules(clothItemDTO, ValidatorOperations.CREATION);
 		ClothItem entity = clothItemTransformer.toEntity(clothItemDTO);
 		validateDataRules(entity, ValidatorOperations.CREATION);	
 		clothItemRepository.save(entity);
 	}
+	
 
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
 	public void validateBussinesRules(ClothItemDTO dto, ValidatorOperations operation) throws BussinesException{
 		switch (operation) {
@@ -101,6 +143,9 @@ public class ClothItemLogic implements AbstractValidator<ClothItemDTO, ClothItem
 		}
 	}
 	
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
 	public void validateParameterBussinesRules(Object o, ValidatorOperations operation) throws BussinesException {
 		switch (operation) {
@@ -119,6 +164,9 @@ public class ClothItemLogic implements AbstractValidator<ClothItemDTO, ClothItem
 		}
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
 	public void validateDataRules(ClothItem entity, ValidatorOperations operation) throws DataBaseException{
 		switch (operation) {
@@ -136,5 +184,4 @@ public class ClothItemLogic implements AbstractValidator<ClothItemDTO, ClothItem
 			break;
 		}
 	}
-
 }

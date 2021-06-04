@@ -6,31 +6,56 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.experimentality.ClothesstoreLATAM.DAO.ClothItemRepository;
-import com.experimentality.ClothesstoreLATAM.DAO.ShoppingCarRepository;
+import com.experimentality.ClothesstoreLATAM.DAO.ShoppingCartRepository;
 import com.experimentality.ClothesstoreLATAM.models.dtos.ClothItemDTO;
-import com.experimentality.ClothesstoreLATAM.models.dtos.ShoppingCarDTO;
-import com.experimentality.ClothesstoreLATAM.models.entities.ShoppingCar;
+import com.experimentality.ClothesstoreLATAM.models.dtos.ShoppingCartDTO;
+import com.experimentality.ClothesstoreLATAM.models.entities.ShoppingCart;
 import com.experimentality.ClothesstoreLATAM.models.transformers.ClothItemTransformer;
-import com.experimentality.ClothesstoreLATAM.models.transformers.ShoppingCarTransformer;
+import com.experimentality.ClothesstoreLATAM.models.transformers.ShoppingCartTransformer;
 import com.experimentality.ClothesstoreLATAM.models.utils.ValidatorOperations;
 import com.experimentality.ClothesstoreLATAM.odels.exceptions.BussinesException;
 import com.experimentality.ClothesstoreLATAM.odels.exceptions.BussinesExceptions;
 import com.experimentality.ClothesstoreLATAM.odels.exceptions.DataBaseException;
 import com.experimentality.ClothesstoreLATAM.odels.exceptions.DataBaseExceptions;
 
+/**
+ * Represent all the logic operations for shopping cart
+ * @author ccardozo
+ *
+ */
 @Service
-public class ShoppingCarLogic implements AbstractValidator<ShoppingCarDTO, ShoppingCar> {
+public class ShoppingCartLogic implements AbstractValidator<ShoppingCartDTO, ShoppingCart> {
 
+	/**
+	 * shopping cart repository
+	 */
 	@Autowired
-	private ShoppingCarRepository shoppingCarRepository;
+	private ShoppingCartRepository shoppingCarRepository;
+	/**
+	 * cloth item repository
+	 */
 	@Autowired
 	private ClothItemRepository clothItemRepository;
+	/**
+	 * shopping cart transformer
+	 */
 	@Autowired
-	private ShoppingCarTransformer shoppingCarTransformer;
+	private ShoppingCartTransformer shoppingCarTransformer;
+	/**
+	 * cloth item transformer
+	 */
 	@Autowired
 	private ClothItemTransformer clothItemTransformer;
 	
-	public ShoppingCarDTO addClothItemToShoppingCar(Long idShoppingCar, Long idClothItem) throws DataBaseException, BussinesException {
+	/**
+	 * method that adds a cloth item to a cart, if the cart id is not given, it will be created a new one
+	 * @param idShoppingCar (can be null, on wich case it will be created a new one)
+	 * @param idClothItem (id of the cloth item to be added to the car)
+	 * @return the created or foun shoping cart inside
+	 * @throws DataBaseException
+	 * @throws BussinesException
+	 */
+	public ShoppingCartDTO addClothItemToShoppingCar(Long idShoppingCar, Long idClothItem) throws DataBaseException, BussinesException {
 		if(idShoppingCar!=null) {
 			return addClothItemToExistingShoppingCar(idShoppingCar, idClothItem);
 		}else {
@@ -38,22 +63,37 @@ public class ShoppingCarLogic implements AbstractValidator<ShoppingCarDTO, Shopp
 		}
 	}
 	
-	private ShoppingCarDTO addClothItemToNewShoppingCar(Long idClothItem) throws BussinesException, DataBaseException {
-		ShoppingCarDTO shoppingCarDTO = new ShoppingCarDTO();
+	/**
+	 * Method that creates a new shopping cart an adds to it the cloth item 
+	 * @param idClothItem id of the cloth item to be aded
+	 * @return the new shopping cart
+	 * @throws BussinesException
+	 * @throws DataBaseException
+	 */
+	private ShoppingCartDTO addClothItemToNewShoppingCar(Long idClothItem) throws BussinesException, DataBaseException {
+		ShoppingCartDTO shoppingCarDTO = new ShoppingCartDTO();
 		ArrayList<ClothItemDTO> clothItems = new ArrayList<ClothItemDTO>();
 		clothItems.add(clothItemTransformer.toDTO(clothItemRepository.findById(idClothItem).get()));
 		shoppingCarDTO.setClothItems(clothItems);
 		validateBussinesRules(shoppingCarDTO, ValidatorOperations.CREATION);
-		ShoppingCar entity = shoppingCarTransformer.toEntity(shoppingCarDTO);
+		ShoppingCart entity = shoppingCarTransformer.toEntity(shoppingCarDTO);
 		validateDataRules(entity, ValidatorOperations.CREATION);	
 		shoppingCarDTO = shoppingCarTransformer.toDTO(shoppingCarRepository.save(entity));
 		return shoppingCarDTO;
 	}
 	
-	private ShoppingCarDTO addClothItemToExistingShoppingCar(Long idShoppingCar, Long idClothItem) throws DataBaseException, BussinesException {
+	/**
+	 * Method that finds a shopping cart an adds the cloth item to it 
+	 * @param idShoppingCar
+	 * @param idClothItem
+	 * @return
+	 * @throws DataBaseException
+	 * @throws BussinesException
+	 */
+	private ShoppingCartDTO addClothItemToExistingShoppingCar(Long idShoppingCar, Long idClothItem) throws DataBaseException, BussinesException {
 		validateParameterBussinesRules(idShoppingCar, ValidatorOperations.SEARCH);
-		ShoppingCar shoppingCar = new ShoppingCar();
-		shoppingCar.setIdshoppingCar(idShoppingCar);
+		ShoppingCart shoppingCar = new ShoppingCart();
+		shoppingCar.setIdshoppingCart(idShoppingCar);
 		validateDataRules(shoppingCar, ValidatorOperations.SEARCH);	
 		shoppingCar = shoppingCarRepository.findById(idShoppingCar).get();
 		validateDataRules(shoppingCar, ValidatorOperations.CREATION);	
@@ -63,18 +103,28 @@ public class ShoppingCarLogic implements AbstractValidator<ShoppingCarDTO, Shopp
 		return shoppingCarTransformer.toDTO(shoppingCar);
 
 	}
-	
-	public ShoppingCarDTO checkShoppingCar(Long idShoppingCar) throws BussinesException, DataBaseException {
+
+	/**
+	 * method that retrieves the shopping cart according to the given id
+	 * @param idShoppingCar id of the shopping cart
+	 * @return the shopping cart found
+	 * @throws BussinesException
+	 * @throws DataBaseException
+	 */
+	public ShoppingCartDTO checkShoppingCar(Long idShoppingCar) throws BussinesException, DataBaseException {
 		validateParameterBussinesRules(idShoppingCar, ValidatorOperations.SEARCH);
-		ShoppingCar shoppingCar = new ShoppingCar();
-		shoppingCar.setIdshoppingCar(idShoppingCar);
+		ShoppingCart shoppingCar = new ShoppingCart();
+		shoppingCar.setIdshoppingCart(idShoppingCar);
 		validateDataRules(shoppingCar, ValidatorOperations.SEARCH);
 		shoppingCar = shoppingCarRepository.findById(idShoppingCar).get();
 		return shoppingCarTransformer.toDTO(shoppingCar);
 	}
 	
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
-	public void validateBussinesRules(ShoppingCarDTO dto, ValidatorOperations operation) throws BussinesException {
+	public void validateBussinesRules(ShoppingCartDTO dto, ValidatorOperations operation) throws BussinesException {
 		switch (operation) {
 		case CREATION:
 			if(dto.getClothItems()==null || dto.getClothItems().size()<1 || dto.getClothItems().get(0).getClothItemId()==null 
@@ -86,7 +136,10 @@ public class ShoppingCarLogic implements AbstractValidator<ShoppingCarDTO, Shopp
 			break;
 		}
 	}
-
+	
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
 	public void validateParameterBussinesRules(Object o, ValidatorOperations operation) throws BussinesException {
 		switch (operation) {
@@ -100,8 +153,11 @@ public class ShoppingCarLogic implements AbstractValidator<ShoppingCarDTO, Shopp
 		}
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
-	public void validateDataRules(ShoppingCar entity, ValidatorOperations operation) throws DataBaseException {
+	public void validateDataRules(ShoppingCart entity, ValidatorOperations operation) throws DataBaseException {
 		switch (operation) {
 		case CREATION:
 			if(entity.getClothItems()==null || entity.getClothItems().size()<1
@@ -111,7 +167,7 @@ public class ShoppingCarLogic implements AbstractValidator<ShoppingCarDTO, Shopp
 			}
 		break;
 		case SEARCH:
-			if(!shoppingCarRepository.existsById(entity.getIdshoppingCar())) {
+			if(!shoppingCarRepository.existsById(entity.getIdshoppingCart())) {
 				throw new DataBaseException(DataBaseExceptions.NOT_FOUND);
 			}
 		break;

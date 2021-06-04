@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import com.sun.istack.NotNull;
 
 /**
+ * Entity that represents the items on the store
  * @author ccardozo
  *
  */
@@ -30,27 +31,46 @@ public class ClothItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "sequence_cloth_items")
 	private Long idClothItem;
 	
+	/**
+	 * name of the item, maxlength 60 chars
+	 */
 	@NotNull
 	@Column(length = 60)
 	private String clothItemName;
 	
+	/**
+	 * description of the item, maxlength 1024 chars
+	 */
 	@NotNull
 	@Column(length = 1024)
 	private String clothItemDescription;
 	
+	/**
+	 * price of the item 
+	 */
 	@NotNull
 	private BigDecimal clothItemPrice;
 	
+	/**
+	 * discount of the item
+	 */
 	@NotNull
 	private Double clothItemDiscount;
 	
+	/**
+	 * list of the images url, the first is the front, the second the back
+	 */
 	@ElementCollection
     @CollectionTable(name = "clothItemImageUrls", joinColumns = @JoinColumn(name = "idClothItem"))
     @Column(name = "clotheItemImageUrl")
 	private List<String> clothItemImageUrls;
 	
+	/**
+	 * number of times the items was borught up by a search
+	 */
 	private Long clothItemLookups;
 
+	//Getters&&Setters-----------
 	public Long getIdClothItem() {
 		return idClothItem;
 	}

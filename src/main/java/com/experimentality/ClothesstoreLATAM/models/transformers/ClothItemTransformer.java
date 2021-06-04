@@ -7,9 +7,17 @@ import org.springframework.stereotype.Service;
 import com.experimentality.ClothesstoreLATAM.models.dtos.ClothItemDTO;
 import com.experimentality.ClothesstoreLATAM.models.entities.ClothItem;
 
+/**
+ * transformer of the object: cloth item
+ * @author ccardozo
+ *
+ */
 @Service
 public class ClothItemTransformer implements AbstractTransformer<ClothItemDTO, ClothItem> {
 
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
 	public ClothItem toEntity(ClothItemDTO dto) {
 		ClothItem entity = new ClothItem();
@@ -27,6 +35,9 @@ public class ClothItemTransformer implements AbstractTransformer<ClothItemDTO, C
 		return entity;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
 	public ClothItemDTO toDTO(ClothItem entity) {
 		ClothItemDTO dto = new ClothItemDTO();

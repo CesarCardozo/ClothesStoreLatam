@@ -6,20 +6,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.experimentality.ClothesstoreLATAM.models.dtos.ClothItemDTO;
-import com.experimentality.ClothesstoreLATAM.models.dtos.ShoppingCarDTO;
+import com.experimentality.ClothesstoreLATAM.models.dtos.ShoppingCartDTO;
 import com.experimentality.ClothesstoreLATAM.models.entities.ClothItem;
-import com.experimentality.ClothesstoreLATAM.models.entities.ShoppingCar;
-
+import com.experimentality.ClothesstoreLATAM.models.entities.ShoppingCart;
+/**
+ * transformer of the object: shopping cart
+ * @author ccardozo
+ *
+ */
 @Service
-public class ShoppingCarTransformer implements AbstractTransformer<ShoppingCarDTO, ShoppingCar> {
+public class ShoppingCartTransformer implements AbstractTransformer<ShoppingCartDTO, ShoppingCart> {
 
+	/**
+	 * transformer of the object: cloth item
+	 */
 	@Autowired
 	private ClothItemTransformer clothItemTransformer;
 
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
-	public ShoppingCar toEntity(ShoppingCarDTO dto) {
-		ShoppingCar entity = new ShoppingCar();
-		entity.setIdshoppingCar(dto.getShoppingCarId());
+	public ShoppingCart toEntity(ShoppingCartDTO dto) {
+		ShoppingCart entity = new ShoppingCart();
+		entity.setIdshoppingCart(dto.getShoppingCartId());
 		ArrayList<ClothItem> items = new ArrayList<ClothItem>();
 		dto.getClothItems().stream().forEach((clothItemDTO)->{
 			items.add(clothItemTransformer.toEntity(clothItemDTO));
@@ -28,10 +38,13 @@ public class ShoppingCarTransformer implements AbstractTransformer<ShoppingCarDT
 		return entity;
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
-	public ShoppingCarDTO toDTO(ShoppingCar entity) {
-		ShoppingCarDTO dto = new ShoppingCarDTO();
-		dto.setShoppingCarId(entity.getIdshoppingCar());
+	public ShoppingCartDTO toDTO(ShoppingCart entity) {
+		ShoppingCartDTO dto = new ShoppingCartDTO();
+		dto.setShoppingCartId(entity.getIdshoppingCart());
 		ArrayList<ClothItemDTO> items = new ArrayList<ClothItemDTO>();
 		entity.getClothItems().stream().forEach((clothItem)->{
 			items.add(clothItemTransformer.toDTO(clothItem));

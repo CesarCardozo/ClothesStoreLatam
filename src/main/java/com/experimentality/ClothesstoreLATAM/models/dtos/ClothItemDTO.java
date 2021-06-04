@@ -3,16 +3,43 @@ package com.experimentality.ClothesstoreLATAM.models.dtos;
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * DTO of the cloth items in the store
+ * @author ccardozo
+ *
+ */
 public class ClothItemDTO {
 
+	/**
+	 * id of the item
+	 */
 	private Long clothItemId;
+	/**
+	 * name of the item
+	 */
 	private String clothItemName;
+	/**
+	 * description of the item
+	 */
 	private String clothItemDescription;
+	/**
+	 * price of the item
+	 */
 	private BigDecimal clothItemPrice;
+	/**
+	 * discount of the item
+	 */
 	private Double clothItemDiscount;
+	/**
+	 * calculated discounted price of the item 
+	 */
 	private BigDecimal clothItemDiscountedPrice;
+	/**
+	 * list of images urls
+	 */
 	private List<String> clothItemImageUrls;
 	
+	//Getters&&Setters-----------                                                                                                     
 	public Long getClothItemId() {
 		return clothItemId;
 	}

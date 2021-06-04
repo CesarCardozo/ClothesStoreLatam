@@ -16,11 +16,22 @@ import javax.persistence.criteria.Root;
 
 import com.experimentality.ClothesstoreLATAM.models.entities.ClothItem;
 
+/**
+ * implementation of ClothItemRepositoryCustom
+ * @author ccardozo
+ *
+ */
 public class ClothItemRepositoryCustomImpl implements ClothItemRepositoryCustom {
 
+	/**
+	 * Entity manager to build and excecute query
+	 */
 	@PersistenceContext
 	private EntityManager entityManager;
 
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
 	public Map<Long, ClothItem> searchByKeywords(List<String> keyWords) {
 		CriteriaQuery<ClothItem> query = createQuery(keyWords);
@@ -28,6 +39,9 @@ public class ClothItemRepositoryCustomImpl implements ClothItemRepositoryCustom 
 				.collect(Collectors.toMap(clothItem->clothItem.getIdClothItem(),clothItem->clothItem));
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	@Override
 	public Map<Long, ClothItem> searchByKeywords(List<String> keyWords, Integer pageIndex, Integer paginationSize) {
 		CriteriaQuery<ClothItem> query = createQuery(keyWords);
@@ -35,6 +49,11 @@ public class ClothItemRepositoryCustomImpl implements ClothItemRepositoryCustom 
 				.collect(Collectors.toMap(clothItem->clothItem.getIdClothItem(),clothItem->clothItem));
 	}
 	
+	/**
+	 * method that builds the basic query to search on clothItems by keywords
+	 * @param keyWords 
+	 * @return CriteriaBuilder query 
+	 */
 	private CriteriaQuery<ClothItem> createQuery(List<String> keyWords) {
 		CriteriaBuilder cb = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ClothItem> query = cb.createQuery(ClothItem.class);

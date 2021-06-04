@@ -1,5 +1,10 @@
 package com.experimentality.ClothesstoreLATAM.odels.exceptions;
 
+/**
+ * posible messages for the bussines exceptions
+ * @author ccardozo
+ *
+ */
 public class BussinesExceptions {
 
 	public static final String OBLIGATORY_FIELDS_MISSING_REQUEST = "There are obligatory fields missing or invelid on the request";

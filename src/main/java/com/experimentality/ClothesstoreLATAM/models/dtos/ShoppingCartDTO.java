@@ -3,18 +3,36 @@ package com.experimentality.ClothesstoreLATAM.models.dtos;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class ShoppingCarDTO {
+/**
+ * DTO of the shopping cart
+ * @author ccardozo
+ *
+ */
+public class ShoppingCartDTO {
 
-	private Long shoppingCarId;
+	/**
+	 * id of the shopping cart
+	 */
+	private Long shoppingCartId;
+	/**
+	 * list of items inside the cart
+	 */
 	private List<ClothItemDTO> clothItems;
+	/**
+	 * calculated total price of the items inside the cart
+	 */
 	private BigDecimal totalPrice;
+	/**
+	 * calculated discounted price of the items inside the cart
+	 */
 	private BigDecimal totalDiscountedPrice;
 	
-	public Long getShoppingCarId() {
-		return shoppingCarId;
+	//Getters&&Setters-----------                                                                                                     
+	public Long getShoppingCartId() {
+		return shoppingCartId;
 	}
-	public void setShoppingCarId(Long shoppingCarId) {
-		this.shoppingCarId = shoppingCarId;
+	public void setShoppingCartId(Long shoppingCartId) {
+		this.shoppingCartId = shoppingCartId;
 	}
 	public List<ClothItemDTO> getClothItems() {
 		return clothItems;
