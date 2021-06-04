@@ -1,0 +1,299 @@
+{
+	"info": {
+		"_postman_id": "305447d9-b59d-4a1d-a988-d9ea3a7be44c",
+		"name": "Experimentality",
+		"description": "Api Endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Heroku test",
+			"item": [
+				{
+					"name": "create cloth item",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"clothItemName\":\"Brown Shoe\",\r\n\t\"clothItemDescription\":\"Brown leather shoe \",\r\n\t\"clothItemPrice\":350000,\r\n\t\"clothItemDiscount\":0.15,\r\n\t\"clothItemImageUrls\":[\"www.imageUrlFront.com\", \"www.imageUrlBack.com\", \"www.imageUrl.com\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://clothesstorelatam.herokuapp.com/clothItem",
+							"protocol": "https",
+							"host": [
+								"clothesstorelatam",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"clothItem"
+							]
+						},
+						"description": "You can upload the images with \"create cloth item Image S3\" service to a bucket to the add the resulting link to the list of the item's image list"
+					},
+					"response": []
+				},
+				{
+					"name": "create cloth item Image S3",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/ccardozo/Desktop/shoe.jpg"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/storage/uploadImage",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"storage",
+								"uploadImage"
+							],
+							"query": [
+								{
+									"key": "file",
+									"value": null,
+									"disabled": true
+								}
+							]
+						},
+						"description": "Upload an image to an S3 Bucket, and then get the url to be used"
+					},
+					"response": []
+				},
+				{
+					"name": "getClothItems lookups",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "clothesstorelatam.herokuapp.com/clothItems/moreSearchedFor",
+							"host": [
+								"clothesstorelatam",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"clothItems",
+								"moreSearchedFor"
+							],
+							"query": [
+								{
+									"key": "paginationSize",
+									"value": "4",
+									"disabled": true
+								},
+								{
+									"key": "currentPage",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get the items sorted by more \"searchedFor\", pagination optional"
+					},
+					"response": []
+				},
+				{
+					"name": "getClothItem by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "clothesstorelatam.herokuapp.com/clothItem?idClothItem=1",
+							"host": [
+								"clothesstorelatam",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"clothItem"
+							],
+							"query": [
+								{
+									"key": "idClothItem",
+									"value": "1"
+								}
+							]
+						},
+						"description": "get a cloth item by id"
+					},
+					"response": []
+				},
+				{
+					"name": "getClothItems by keywords",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "clothesstorelatam.herokuapp.com/clothItems?keywords=brown",
+							"host": [
+								"clothesstorelatam",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"clothItems"
+							],
+							"query": [
+								{
+									"key": "keywords",
+									"value": "brown"
+								},
+								{
+									"key": "paginationSize",
+									"value": "3",
+									"disabled": true
+								},
+								{
+									"key": "currentPage",
+									"value": "2",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Get items that match the keywords given, pagination optional"
+					},
+					"response": []
+				},
+				{
+					"name": "addToCart",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "clothesstorelatam.herokuapp.com/addToCart?idClothItem=1&idShoppingCar=1",
+							"host": [
+								"clothesstorelatam",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"addToCart"
+							],
+							"query": [
+								{
+									"key": "idClothItem",
+									"value": "1"
+								},
+								{
+									"key": "idShoppingCar",
+									"value": "1"
+								}
+							]
+						},
+						"description": "adds an item to a cart, if the id of the cart is not given, a new one will be created"
+					},
+					"response": []
+				},
+				{
+					"name": "getShoppingCart by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "clothesstorelatam.herokuapp.com/shoppingCart?idShopingCart=3",
+							"host": [
+								"clothesstorelatam",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"shoppingCart"
+							],
+							"query": [
+								{
+									"key": "idShopingCart",
+									"value": "3"
+								}
+							]
+						},
+						"description": "get a shopping cart by id"
+					},
+					"response": []
+				}
+			],
+			"description": "Tests performed on the heroku server"
+		}
+	]
+}
