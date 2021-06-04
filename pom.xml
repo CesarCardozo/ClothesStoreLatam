@@ -14,7 +14,7 @@
 	<name>ClothesstoreLATAM</name>
 	<description>Technical test for the selection process of experimentality, by Cesar Cardpzp</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
