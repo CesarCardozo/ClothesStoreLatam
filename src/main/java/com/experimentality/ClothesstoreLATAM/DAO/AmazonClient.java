@@ -20,28 +20,55 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.experimentality.ClothesstoreLATAM.odels.exceptions.DataBaseException;
 
+/**
+ * Service that enables the persistence of files on an s3 bucket
+ * @author ccardozo
+ *
+ */
 @Service
 public class AmazonClient {
 
+	/**
+	 * amazon s3 client
+	 */
 	private AmazonS3 s3client;
 
+	/**
+	 * end point of the bucket
+	 */
 	@Value("${amazonProperties.endpointUrl}")
 	private String endpointUrl;
+	/**
+	 * name of the bucket
+	 */
 	@Value("${amazonProperties.bucketName}")
+	/**
+	 * acces key of the IAM user on AWS, to get acces to the bucket
+	 */
 	private String bucketName;
 	@Value("${amazonProperties.accessKey}")
 	private String accessKey;
+	/**
+	 * secret of the IAM user on AWS, to get acces to the bucket
+	 */
 	@Value("${amazonProperties.secretKey}")
 	private String secretKey;
 
+	@SuppressWarnings("deprecation")
 	@PostConstruct
 	private void initializeAmazon() {
 		AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
 		this.s3client = new AmazonS3Client(credentials);
 	}
 
+	/**
+	 * Method that tries to save a multipart on the bucket
+	 * @param multipartFile file to be saved
+	 * @return url of the saved file
+	 * @throws IOException
+	 * @throws DataBaseException
+	 */
 	public String uploadFile(MultipartFile multipartFile) throws IOException, DataBaseException {
-
 		String fileUrl = "";
 		try {
 			File file = convertMultiPartToFile(multipartFile);
@@ -49,9 +76,7 @@ public class AmazonClient {
 			fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
 			uploadFileTos3bucket(fileName, file);
 			file.delete();
-		} /*
-			 * catch (Exception e) { e.printStackTrace(); }
-			 */
+		}
 		catch (AmazonServiceException ase) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("Caught an AmazonServiceException from GET requests, rejected reasons:");
@@ -72,14 +97,30 @@ public class AmazonClient {
 		return fileUrl;
 	}
 
+	/**
+	 * Method that saves a file in the bucket
+	 * @param fileName name of the file
+	 * @param file file to be saved
+	 */
 	private void uploadFileTos3bucket(String fileName, File file) {
 		s3client.putObject(new PutObjectRequest(bucketName, fileName, file));
 	}
 
+	/**
+	 * method that returns the name of a file with the blanks separated by '_' concatenated to the current time of the server on milis 
+	 * @param multiPart 
+	 * @return fileName
+	 */
 	private String generateFileName(MultipartFile multiPart) {
 		return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
 	}
 
+	/**
+	 * method that converts a multipart file to a file
+	 * @param file multipartfile
+	 * @return file converted
+	 * @throws IOException
+	 */
 	private File convertMultiPartToFile(MultipartFile file) throws IOException {
 		File convFile = new File(file.getOriginalFilename());
 		FileOutputStream fos = new FileOutputStream(convFile);
